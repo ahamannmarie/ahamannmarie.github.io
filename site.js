@@ -13,6 +13,12 @@ fetch('data/theme.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(t=>
 const dot=document.getElementById('dot'),trail=document.getElementById('trail');
 function move(){const m=document.documentElement.scrollHeight-innerHeight;dot.style.top=((m>0?scrollY/m:0)*(trail.clientHeight-22))+'px'}
 addEventListener('scroll',move,{passive:true});addEventListener('resize',move);move();
+// the trail IS the scrollbar: click it or drag the star to scroll
+if(dot&&trail){const go=y=>{const r=trail.getBoundingClientRect(),p=Math.min(1,Math.max(0,(y-r.top-11)/(r.height-22)));scrollTo({top:p*(document.documentElement.scrollHeight-innerHeight),behavior:'instant'})};
+ let drag=false;
+ trail.addEventListener('pointerdown',e=>{drag=true;trail.setPointerCapture(e.pointerId);go(e.clientY);e.preventDefault()});
+ trail.addEventListener('pointermove',e=>{if(drag)go(e.clientY)});
+ const up=()=>{drag=false};trail.addEventListener('pointerup',up);trail.addEventListener('pointercancel',up)}
 
 // ---- fill the page from data/*.json (edited in Pages CMS). Defaults stay in the HTML if a file is missing.
 const get=(o,p)=>p.split('.').reduce((a,k)=>a==null?a:a[k],o);
