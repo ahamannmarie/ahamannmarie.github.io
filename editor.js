@@ -102,7 +102,7 @@ function themePanel(){const T=docs.theme,C={paper:'Page background',ink:'Text an
   panel('Colors & fonts',...rows,...sel)}
 function sitePanel(){const S=docs.site,H=docs.home,n=k=>()=>getp(S,['nav',k]);
   const nav=[['home','Menu: Home'],['illustration','Menu: Illustration'],['game','Menu: Game design'],['commissions','Menu: Commissions'],['about','Menu: About me']].map(([k,l])=>tin(l,n(k),v=>{setp(S,['nav',k],v);setNav(S.data.nav)}));
-  panel('Menu & site',tin('Logo text (keep the ✦)',()=>S.data.logo,v=>{setp(S,['logo'],v);setLogo(v)}),...nav,tin('Contact email',()=>S.data.email,v=>setp(S,['email'],v)),
+  panel('Menu & site',tin('Logo text (keep the ✦)',()=>S.data.logo,v=>{setp(S,['logo'],v);setLogo(v)}),...nav,tin('Contact email',()=>S.data.email,v=>setp(S,['email'],v)),...[['instagram','Instagram (link or @name)'],['twitter','X / Twitter (link or @name)'],['tiktok','TikTok (link or @name)']].map(([k,l])=>tin(l,()=>getp(S,['social',k]),v=>{setp(S,['social',k],v);renderSocials(S.data.social)})),
     tin('Scrolling banner text (home page)',()=>H.data.band,v=>{setp(H,['band'],v);$$('.band span').forEach(x=>x.textContent=v)}))}
 
 
@@ -183,7 +183,7 @@ async function start(){if(on)return;if(!token&&!await signIn())return;
   catch(e){sessionStorage.removeItem('gh');localStorage.removeItem('gh');token='';alert('Could not open your content ('+e.message+'). Please sign in again.');return}
   docs.theme.data={colors:{...DEFAULT_THEME.colors,...docs.theme.data.colors},fonts:{...DEFAULT_THEME.fonts,...docs.theme.data.fonts}};
   on=true;sessionStorage.edit='1';document.body.classList.add('editing');bar();
-  setLogo(docs.site.data.logo);setNav(docs.site.data.nav);wireText();wireLists();wireImages();drawGallery();
+  setLogo(docs.site.data.logo);setNav(docs.site.data.nav);window.__editing=true;renderSocials(docs.site.data.social);wireText();wireLists();wireImages();drawGallery();
   document.addEventListener('click',e=>{const a=e.target.closest('a');if(!a||e.target.closest('.ed-bar,.ed-dlg,.ed-ui,.ed-img,input,button'))return;if(a.classList.contains('admin-link'))return;
     if(a.closest('header')){if(dirty.size&&!confirm('You have unsaved changes. Leave this page?'))e.preventDefault();return}e.preventDefault()},true);
   addEventListener('beforeunload',e=>{if(dirty.size)e.preventDefault()})}

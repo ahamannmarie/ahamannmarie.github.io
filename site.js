@@ -91,11 +91,17 @@ if(sessionStorage.edit==='1'&&(sessionStorage.gh||localStorage.gh))openEditor(fa
 function openEditor(toggle){const go=()=>toggle?window.SiteEditor.toggle():window.SiteEditor.start();
   if(window.SiteEditor)return go();const s=document.createElement('script');s.src='editor.js';s.onload=go;document.head.append(s)}
 
-// social links in every footer (set them in the editor: Menu & site)
-function renderSocials(s){document.querySelectorAll('footer .socials').forEach(n=>n.remove());s=s||{};
-  const url=(v,base)=>/^https?:\/\//i.test(v)?v:base+v.replace(/^@/,'');
+// social links: shown at the top of the Home and About pages (or in the footer on pages without a spot)
+function renderSocials(s){document.querySelectorAll('.socials').forEach(n=>n.remove());s=s||{};
   const ICONS={instagram:"<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><circle cx=\"17.2\" cy=\"6.8\" r=\"1\" fill=\"currentColor\" stroke=\"none\"/></svg>",twitter:"<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 4h3.8l12.2 16h-3.8z\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M19.6 4L4.4 20\"/></svg>",tiktok:"<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 3v11.2a3.8 3.8 0 1 1-3.8-3.8\"/><path d=\"M14 3c.3 2.6 2.1 4.3 5 4.5\"/></svg>"};
-  const defs=[['instagram','Instagram','https://instagram.com/'],['twitter','X (Twitter)','https://x.com/'],['tiktok','TikTok','https://tiktok.com/@']].filter(([k])=>s[k]&&s[k].trim());
-  if(!defs.length)return;
-  document.querySelectorAll('footer').forEach(ft=>{const d=document.createElement('div');d.className='socials';
-    defs.forEach(([k,l,b])=>{const a=document.createElement('a');a.href=url(s[k].trim(),b);a.innerHTML=ICONS[k];a.setAttribute('aria-label',l+' (opens in a new tab)');a.title=l;a.target='_blank';a.rel='noopener noreferrer';d.append(a)});ft.prepend(d)})}
+  const url=(v,base)=>/^https?:\/\//i.test(v)?v:base+v.replace(/^@/,'');
+  const all=[['instagram','Instagram','https://instagram.com/'],['twitter','X (Twitter)','https://x.com/'],['tiktok','TikTok','https://tiktok.com/@']];
+  const list=window.__editing?all:all.filter(([k])=>s[k]&&s[k].trim());
+  if(!list.length)return;
+  const slots=[...document.querySelectorAll('[data-socials]')],targets=slots.length?slots:[...document.querySelectorAll('footer')];
+  targets.forEach(t=>{const d=document.createElement('div');d.className='socials';
+    list.forEach(([k,l,b])=>{const a=document.createElement('a'),has=s[k]&&s[k].trim();a.innerHTML=ICONS[k];a.title=l;
+      if(has){a.href=url(s[k].trim(),b);a.target='_blank';a.rel='noopener noreferrer';a.setAttribute('aria-label',l+' (opens in a new tab)')}
+      else{a.href='#';a.className='empty';a.setAttribute('aria-label',l+' (add your link in Menu & site)')}
+      d.append(a)});
+    slots.length?t.append(d):t.prepend(d)})}
