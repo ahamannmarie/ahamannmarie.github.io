@@ -161,3 +161,10 @@ html::-webkit-scrollbar{display:none}
 .ib-card .meta{font-size:.9rem;opacity:.8}
 .ed-sql{width:100%;font:.8rem/1.4 monospace;padding:10px;border:2px solid var(--ink);border-radius:12px;background:#f7f5f2;color:var(--ink)}
 .ed-steps{padding-left:20px;display:grid;gap:6px}
+
+.socials{flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.socials a{border:2px solid var(--ink);border-radius:999px;padding:8px 18px;font-weight:700;font-size:.9rem;text-decoration:none;background:#fff;min-height:40px;display:inline-flex;align-items:center}
+.socials a:hover{background:var(--yellow)}
+
+.socials a{padding:0;width:44px;height:44px;min-height:44px;justify-content:center;border-radius:50%}
+.socials svg{width:22px;height:22px}
