@@ -1,32 +1,44 @@
-[
-  {
-    "title": "Sweet trouble",
-    "subtitle": "Character illustration",
-    "image": ""
-  },
-  {
-    "title": "Tiny marvels",
-    "subtitle": "Character sheet",
-    "image": ""
-  },
-  {
-    "title": "Huge flowers",
-    "subtitle": "Spot illustration",
-    "image": ""
-  },
-  {
-    "title": "Party hat pal",
-    "subtitle": "Character illustration",
-    "image": ""
-  },
-  {
-    "title": "Cozy corner",
-    "subtitle": "Environment",
-    "image": ""
-  },
-  {
-    "title": "Sketchbook pages",
-    "subtitle": "Studies",
-    "image": ""
-  }
-]
+{
+  "tag": "Little guys and their homes",
+  "title": "Illustration",
+  "accent": "& characters.",
+  "lead": "Characters with big feelings, odd shapes, and a lot of snacks.",
+  "items": [
+    {
+      "image": "",
+      "more": [],
+      "title": "Sweet trouble",
+      "subtitle": "Character illustration"
+    },
+    {
+      "image": "",
+      "more": [],
+      "title": "Tiny marvels",
+      "subtitle": "Character sheet"
+    },
+    {
+      "image": "",
+      "more": [],
+      "title": "Huge flowers",
+      "subtitle": "Spot illustration"
+    },
+    {
+      "image": "",
+      "more": [],
+      "title": "Party hat pal",
+      "subtitle": "Character illustration"
+    },
+    {
+      "image": "",
+      "more": [],
+      "title": "Cozy corner",
+      "subtitle": "Environment"
+    },
+    {
+      "image": "",
+      "more": [],
+      "title": "Sketchbook pages",
+      "subtitle": "Studies"
+    }
+  ]
+}

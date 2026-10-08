@@ -1,17 +1,26 @@
-[
-  {
-    "title": "Storybook town",
-    "subtitle": "Game jam · buildings and animations",
-    "image": ""
-  },
-  {
-    "title": "Candy kart racer",
-    "subtitle": "Original game concept",
-    "image": ""
-  },
-  {
-    "title": "Walk and idle cycles",
-    "subtitle": "Character animation",
-    "image": ""
-  }
-]
+{
+  "tag": "Cozy games, big ideas",
+  "title": "Game",
+  "accent": "design.",
+  "lead": "Characters, worlds, and assets for games that feel like a warm blanket.",
+  "items": [
+    {
+      "image": "",
+      "more": [],
+      "title": "Storybook town",
+      "subtitle": "Game jam · buildings and animations"
+    },
+    {
+      "image": "",
+      "more": [],
+      "title": "Candy kart racer",
+      "subtitle": "Original game concept"
+    },
+    {
+      "image": "",
+      "more": [],
+      "title": "Walk and idle cycles",
+      "subtitle": "Character animation"
+    }
+  ]
+}
