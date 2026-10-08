@@ -1,5 +1,7 @@
 {
   "email": "you@example.com",
   "footer": "Illustration · Character design · Game design",
-  "copyright": "© 2026 Annmarie Aham"
+  "copyright": "© 2026 Annmarie Aham",
+  "supabaseUrl": "https://fuwptmzuumdhxasydmco.supabase.co",
+  "supabaseKey": "sb_publishable_oVzx7nXrZ_gjZAjBinRvbA_FiDFbSST"
 }
