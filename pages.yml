@@ -267,6 +267,28 @@ content:
   format: json
   fields:
   - name: logo
+    label: Logo text (keep the ✦)
+    type: string
+  - name: nav
+    label: Menu words
+    type: object
+    fields:
+    - name: home
+      label: Home
+      type: string
+    - name: illustration
+      label: Illustration
+      type: string
+    - name: game
+      label: Game design
+      type: string
+    - name: commissions
+      label: Commissions
+      type: string
+    - name: about
+      label: About me
+      type: string
+  - name: logo
     label: Logo text
     type: string
   - name: nav

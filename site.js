@@ -45,7 +45,7 @@ const lb=(()=>{let el,track,cap,slides=[],cur=0,opener;
  const d={...data,site}; if(!d.cta&&home.cta) d.cta=home.cta;
  if(site.logo){const a=document.querySelector('.logo'),[x,y]=site.logo.split('✦');if(a){a.textContent=x;if(y!==undefined){const s=document.createElement('span');s.textContent='✦';a.append(s,y)}}}
  const nv=site.nav||{},links=document.querySelectorAll('header nav a');['home','illustration','game','commissions','about'].forEach((k,i)=>{if(links[i]&&nv[k])links[i].textContent=nv[k]});
- document.querySelectorAll('footer').forEach(f=>{const a=document.createElement('a');a.href='admin.html';a.className='admin-link';a.textContent='✎ Edit site';f.append(a)});
+ document.querySelectorAll('footer').forEach(f=>{const a=document.createElement('a');a.href='#edit';a.onclick=ev=>{ev.preventDefault();openEditor(true)};a.className='admin-link';a.textContent='✎ Edit site';f.append(a)});
  document.querySelectorAll('[data-text]').forEach(e=>{const v=get(d,e.dataset.text);if(typeof v==='string'&&v)e.textContent=v});
  document.querySelectorAll('[data-list]').forEach(e=>{const v=get(d,e.dataset.list);if(Array.isArray(v)&&v.length){e.replaceChildren(...v.map(t=>{const i=document.createElement(e.dataset.item||'li');i.textContent=t;return i}))}});
  document.querySelectorAll('[data-mailto]').forEach(e=>{const v=get(d,e.dataset.mailto);if(v)e.href='mailto:'+v+'?subject=Commission%20inquiry'});
@@ -65,4 +65,9 @@ const lb=(()=>{let el,track,cap,slides=[],cur=0,opener;
    if(it.subtitle){const s=document.createElement('small');s.textContent=it.subtitle;c.append(s)}
    tile.append(c);box.append(tile)});
  }
+if(sessionStorage.edit==='1'&&(sessionStorage.gh||localStorage.gh))openEditor(false);
 })();
+
+// loads editor.js on demand (only when you click "Edit site")
+function openEditor(toggle){const go=()=>toggle?window.SiteEditor.toggle():window.SiteEditor.start();
+  if(window.SiteEditor)return go();const s=document.createElement('script');s.src='editor.js';s.onload=go;document.head.append(s)}

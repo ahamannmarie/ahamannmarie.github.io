@@ -118,3 +118,26 @@ nav a[aria-current]{color:var(--pink);text-decoration:underline;text-underline-o
 @media(max-width:640px){.lb-p,.lb-n{top:auto;bottom:14px;margin:0}.lb-cap{padding:8px 70px 20px}}
 
 .admin-link{font-size:.85rem;opacity:.7}
+
+/* in-page editor */
+body.editing{padding-bottom:96px}
+.ed{outline:2px dashed var(--pink);outline-offset:3px;cursor:text;min-width:1ch}
+.ed:focus{outline-style:solid;background:rgba(243,210,76,.3)}
+.ed-img{position:absolute!important;top:10px;left:10px;z-index:6}
+.ed-ui{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px}
+.tile.ed-add{display:grid;place-items:center;min-height:200px;background:transparent;border-style:dashed;box-shadow:none}
+.b{background:var(--plum);color:#fff;border:0;border-radius:999px;padding:12px 22px;font:inherit;font-weight:700;cursor:pointer;min-height:44px}
+.b:hover{background:var(--pink)}.b.s{background:#fff;color:var(--ink);border:2px solid var(--ink);padding:6px 14px;min-height:40px}.b.s:hover{background:var(--yellow)}
+.ed-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:90;max-width:calc(100vw - 20px);display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;background:var(--plum);color:#fff;border-radius:24px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.ed-bar .b.s{min-height:40px}
+.ed-status{font-weight:700;font-size:.95rem}
+.ed-err{color:#ffb3c6;font-weight:700}.ed-dlg .ed-err{color:#b3123c}
+.ed-dlg{border:2px solid var(--ink);border-radius:24px;padding:22px;max-width:min(520px,calc(100vw - 24px));background:#fff;color:var(--ink);box-shadow:6px 8px 0 var(--ink);display:grid;gap:12px}
+.ed-dlg[open]{display:grid}
+.ed-dlg::backdrop{background:rgba(30,16,36,.6)}
+.ed-dlg h2{font-size:1.8rem}
+.ed-l{display:grid;gap:4px;font-weight:700}.ed-c{display:flex;gap:8px;align-items:center;font-weight:400}
+.ed-dlg input[type=text],.ed-dlg input[type=password],.ed-dlg select{width:100%;padding:10px 12px;border:2px solid var(--ink);border-radius:12px;font:inherit;background:#fff;color:var(--ink)}
+.ed-dlg input[type=color]{width:64px;height:40px;border:2px solid var(--ink);border-radius:10px;padding:2px;background:#fff}
+.ed-row{display:flex;gap:10px;flex-wrap:wrap}
+.ed-panel{position:fixed;right:14px;left:auto;top:14px;bottom:auto;margin:0;width:min(360px,calc(100vw - 28px));max-height:calc(100dvh - 110px);overflow:auto;z-index:95}
