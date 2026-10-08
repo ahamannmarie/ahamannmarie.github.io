@@ -13,32 +13,40 @@
     {
       "image": "/images/1791452397167-img-0235.jpg",
       "more": [],
-      "title": "Tiny marvels",
-      "subtitle": "Character sheet"
+      "title": "Sweet tooth",
+      "subtitle": "Abstract painting"
     },
     {
-      "image": "/images/1791452400860-img-0241.jpg",
+      "image": "/images/1791467650048-img-0217.jpg",
       "more": [],
-      "title": "Huge flowers",
-      "subtitle": "Spot illustration"
+      "title": "This City is a Graveyard",
+      "subtitle": "Album Cover illustration"
     },
     {
-      "image": "/images/1791452404909-img-0242.jpg",
+      "image": "/images/1791467663111-boom-1-.jpg",
       "more": [],
-      "title": "Party hat pal",
+      "title": "Boom",
       "subtitle": "Character illustration"
     },
     {
-      "image": "",
-      "more": [],
+      "image": "/images/1791467915864-untitled-artwork-14-.jpg",
+      "more": [
+        "/images/1791467924833-untitled-artwork-13-.jpg"
+      ],
       "title": "Cozy corner",
-      "subtitle": "Environment"
+      "subtitle": "Character illustration"
     },
     {
-      "image": "",
+      "image": "/images/1791467977640-untitled-artwork-1-.jpg",
       "more": [],
       "title": "Sketchbook pages",
-      "subtitle": "Studies"
+      "subtitle": "Jinx Studies"
+    },
+    {
+      "image": "/images/1791467997819-untitled-artwork.png",
+      "more": [],
+      "title": "Fashion City",
+      "subtitle": "Doll concepts"
     }
   ]
 }
