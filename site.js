@@ -71,6 +71,18 @@ const lb=(()=>{let el,track,cap,slides=[],cur=0,opener;
    if(it.subtitle){const s=document.createElement('small');s.textContent=it.subtitle;c.append(s)}
    tile.append(c);box.append(tile)});
  }
+ // commission form -> Supabase inbox (falls back to opening your email app if the inbox isn't set up yet)
+ document.querySelectorAll('form[data-commission]').forEach(f=>{const msg=f.querySelector('.fmsg');
+  f.addEventListener('submit',async e=>{e.preventDefault();msg.className='fmsg';const v=Object.fromEntries(new FormData(f));if(v.website)return;
+   const bad=t=>{msg.textContent=t;msg.classList.add('bad')};
+   if(!v.name.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email.trim())||!v.message.trim())return bad('Please add your name, a valid email, and what you would like drawn.');
+   const url=site.supabaseUrl,key=site.supabaseKey;
+   if(!url||!key){location.href='mailto:'+(site.email||'')+'?subject=Commission%20inquiry&body='+encodeURIComponent(v.message+'\n\n'+v.name+' ('+v.email+')');return}
+   msg.textContent='Sending…';
+   try{const hd={apikey:key,'Content-Type':'application/json',Prefer:'return=minimal'};if(key.startsWith('eyJ'))hd.Authorization='Bearer '+key;
+    const r=await fetch(url.replace(/\/$/,'')+'/rest/v1/commissions',{method:'POST',headers:hd,body:JSON.stringify({name:v.name.trim(),email:v.email.trim(),message:v.message.trim(),budget:(v.budget||'').trim()||null})});
+    if(!r.ok)throw new Error();f.reset();msg.textContent='Thank you! Your request was sent. I will reply by email.'}
+   catch(err){bad('Sorry, that did not send. Please try again, or email me directly.')}})});
 if(sessionStorage.edit==='1'&&(sessionStorage.gh||localStorage.gh))openEditor(false);
 })();
 

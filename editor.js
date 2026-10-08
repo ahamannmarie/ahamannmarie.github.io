@@ -93,7 +93,7 @@ function drawGallery(){const box=$('[data-gallery]');if(!box)return;const D=docs
 
 // ---------- panels (colors, fonts, menu)
 function panel(title,...kids){$('.ed-panel')?.remove();const p=el('dialog',{class:'ed-dlg ed-panel','aria-label':title},el('h2',{},title),...kids);
-  p.append(btn('Close',()=>p.remove(),'b'));document.body.append(p);p.show();p.querySelector('button').focus()}
+  p.append(btn('Close',()=>p.remove(),'b'));document.body.append(p);p.show();p.querySelector('button').focus();return p}
 const tin=(label,get,set)=>{const i=el('input',{type:'text'});i.value=get()||'';i.oninput=()=>set(i.value);return lab(label,i)};
 function themePanel(){const T=docs.theme,C={paper:'Page background',ink:'Text and outlines',pink:'Pink accent',yellow:'Yellow',orange:'Orange',blush:'Light pink',plum:'Dark purple',peach:'Peach circle',salmon:'Bottom section'};
   const rows=Object.entries(C).map(([k,l])=>{const i=el('input',{type:'color'});i.value=T.data.colors[k];i.oninput=()=>{setp(T,['colors',k],i.value);applyTheme(T.data)};return lab(l,i)});
@@ -105,6 +105,68 @@ function sitePanel(){const S=docs.site,H=docs.home,n=k=>()=>getp(S,['nav',k]);
   panel('Menu & site',tin('Logo text (keep the ✦)',()=>S.data.logo,v=>{setp(S,['logo'],v);setLogo(v)}),...nav,tin('Contact email',()=>S.data.email,v=>setp(S,['email'],v)),
     tin('Scrolling banner text (home page)',()=>H.data.band,v=>{setp(H,['band'],v);$$('.band span').forEach(x=>x.textContent=v)}))}
 
+
+// ---------- inbox (commission requests stored in your Supabase project)
+const SQL=`create table public.commissions (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null check (char_length(name) between 1 and 100),
+  email text not null check (char_length(email) between 3 and 200),
+  message text not null check (char_length(message) between 1 and 4000),
+  budget text check (char_length(budget) <= 100),
+  is_read boolean not null default false
+);
+alter table public.commissions enable row level security;
+grant usage on schema public to anon, authenticated;
+grant insert on public.commissions to anon;
+grant select, update, delete on public.commissions to authenticated;
+create policy "visitors can send" on public.commissions for insert to anon with check (is_read = false);
+create policy "owner can read" on public.commissions for select to authenticated using (true);
+create policy "owner can update" on public.commissions for update to authenticated using (true) with check (true);
+create policy "owner can delete" on public.commissions for delete to authenticated using (true);`;
+let sbToken=sessionStorage.sbt||'';
+const sbBase=()=>docs.site.data.supabaseUrl.replace(/\/$/,'');
+const sbHead=(t,x={})=>{const k=docs.site.data.supabaseKey,h={apikey:k,'Content-Type':'application/json',...x};if(t)h.Authorization='Bearer '+t;else if(k.startsWith('eyJ'))h.Authorization='Bearer '+k;return h};
+function inboxPanel(){const S=docs.site.data;
+  if(!S.supabaseUrl||!S.supabaseKey){
+    const ta=el('textarea',{class:'ed-sql',rows:9,readonly:''});ta.value=SQL;
+    const p=panel('Set up your inbox (free, one time)',
+      el('ol',{class:'ed-steps'},el('li',{},'Go to supabase.com, sign up, and click New project. Choose any name and a database password, and save the password.'),
+        el('li',{},'When the project is ready, open ',el('b',{},'SQL Editor'),', click New query, paste the code below, and click Run.'),
+        el('li',{},'Open ',el('b',{},'Authentication → Users → Add user → Create new user'),'. Enter your email and a password, and tick Auto Confirm.'),
+        el('li',{},'In ',el('b',{},'Authentication'),', find the sign-in settings and turn off "Allow new users to sign up", so only you can have an account.'),
+        el('li',{},'Open ',el('b',{},'Project Settings → API Keys'),'. Copy the Project URL and the publishable (or anon) key into the boxes below.')),
+      ta,btn('Copy the code',()=>{navigator.clipboard&&navigator.clipboard.writeText(SQL);ta.select()}),
+      tin('Project URL (starts with https://)',()=>S.supabaseUrl,v=>setp(docs.site,['supabaseUrl'],v.trim())),
+      tin('Publishable (anon) key',()=>S.supabaseKey,v=>setp(docs.site,['supabaseKey'],v.trim())),
+      btn('Save and continue',async()=>{await save();if(S.supabaseUrl&&S.supabaseKey)inboxPanel()},'b'));
+    p.classList.add('ed-wide');return}
+  if(!sbToken){
+    const em=el('input',{type:'text',autocomplete:'username'}),pw=el('input',{type:'password',autocomplete:'current-password'}),err=el('p',{role:'alert',class:'ed-err'});em.value=localStorage.sbe||'';
+    const p=panel('Sign in to your inbox',el('p',{},'Use the email and password you made in Supabase (not your GitHub key).'),lab('Email',em),lab('Password',pw),err,
+      btn('Sign in',async()=>{err.textContent='';const r=await fetch(sbBase()+'/auth/v1/token?grant_type=password',{method:'POST',headers:sbHead(null),body:JSON.stringify({email:em.value.trim(),password:pw.value})}).catch(()=>null);
+        if(!r)return err.textContent='Could not reach Supabase. Check the project URL, and that the project is not paused.';
+        const j=await r.json().catch(()=>({}));if(!r.ok||!j.access_token)return err.textContent='Sign-in failed. Check your email and password.';
+        sbToken=j.access_token;sessionStorage.sbt=sbToken;localStorage.sbe=em.value.trim();inboxPanel()},'b'));
+    p.classList.add('ed-wide');return}
+  const list=el('div',{style:'display:grid;gap:10px'},el('p',{},'Loading…'));
+  const p=panel('Commission requests',list);p.classList.add('ed-wide');
+  const load=async()=>{const r=await fetch(sbBase()+'/rest/v1/commissions?select=*&order=created_at.desc',{headers:sbHead(sbToken)}).catch(()=>null);
+    if(!r){list.replaceChildren(el('p',{class:'ed-err'},'Could not reach Supabase.'));return}
+    if(r.status===401||r.status===403){sbToken='';sessionStorage.removeItem('sbt');p.remove();inboxPanel();return}
+    if(!r.ok){list.replaceChildren(el('p',{class:'ed-err'},'Could not load requests. Did the SQL code run without errors?'));return}
+    const rows=await r.json();
+    if(!rows.length){list.replaceChildren(el('p',{},'No requests yet. They will show up here.'));return}
+    list.replaceChildren(...rows.map(m=>{const ok=/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(m.email||'');
+      const act=async(method,body,u)=>{await fetch(sbBase()+'/rest/v1/commissions?id=eq.'+m.id,{method,headers:sbHead(sbToken,{Prefer:'return=minimal'}),body:body&&JSON.stringify(body)});load()};
+      return el('div',{class:'ib-card'+(m.is_read?'':' new')},
+        el('b',{},(m.is_read?'':'NEW · ')+(m.name||'')),
+        el('span',{class:'meta'},new Date(m.created_at).toLocaleString()+(m.budget?' · Budget: '+m.budget:'')),
+        ok?el('a',{href:'mailto:'+m.email+'?subject=Re:%20Your%20commission%20request'},m.email):el('span',{},m.email||''),
+        el('pre',{},m.message||''),
+        el('div',{class:'ed-row'},btn(m.is_read?'Mark unread':'Mark read',()=>act('PATCH',{is_read:!m.is_read})),btn('Delete',()=>{if(confirm('Delete this request for good?'))act('DELETE')})))}))};
+  load()}
+
 // ---------- toolbar, save, start/stop
 async function save(){status.className='';status.textContent='Saving…';
   try{for(const d of[...dirty]){const body={message:'Edit site (in-page editor)',content:enc(JSON.stringify(d.data,null,2)+'\n')};if(d.sha)body.sha=d.sha;
@@ -114,7 +176,7 @@ async function save(){status.className='';status.textContent='Saving…';
     status.textContent='Saved. Visitors see it in about a minute.'}catch(e){status.className='ed-err';status.textContent='Could not save: '+e.message}}
 function leave(){if(dirty.size&&!confirm('You have unsaved changes. Leave without saving?'))return false;sessionStorage.removeItem('edit');return true}
 function bar(){status=el('span',{class:'ed-status',role:'status'});
-  const b=el('div',{class:'ed-bar',role:'region','aria-label':'Site editor'},el('b',{},'✎ Editing'),btn('Save changes',save,'b'),btn('Colors & fonts',themePanel),btn('Menu & site',sitePanel),btn('Sign out',()=>{if(!leave())return;sessionStorage.removeItem('gh');localStorage.removeItem('gh');location.reload()}),btn('Done',()=>{if(leave())location.reload()}),status);
+  const b=el('div',{class:'ed-bar',role:'region','aria-label':'Site editor'},el('b',{},'✎ Editing'),btn('Save changes',save,'b'),btn('Colors & fonts',themePanel),btn('Menu & site',sitePanel),btn('📥 Inbox',inboxPanel),btn('Sign out',()=>{if(!leave())return;sessionStorage.removeItem('sbt');sessionStorage.removeItem('gh');localStorage.removeItem('gh');location.reload()}),btn('Done',()=>{if(leave())location.reload()}),status);
   document.body.append(b)}
 async function start(){if(on)return;if(!token&&!await signIn())return;
   try{docs.site=await loadDoc('data/site.json');docs.theme=await loadDoc('data/theme.json');docs.home=await loadDoc('data/home.json');docs.page=page==='home'?docs.home:await loadDoc('data/'+page+'.json')}

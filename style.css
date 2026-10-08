@@ -148,3 +148,16 @@ html::-webkit-scrollbar{display:none}
 #trail{right:8px;pointer-events:auto;cursor:pointer;touch-action:none}
 #trail::before{content:"";position:absolute;inset:0 -12px}
 #dot{cursor:grab;pointer-events:none}
+
+/* commission form + inbox */
+.fl{display:grid;gap:6px;font-weight:700}
+.fl input,.fl textarea{width:100%;padding:11px 12px;border:2px solid var(--ink);border-radius:12px;font:inherit;font-weight:400;background:#fff;color:var(--ink)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.fmsg{font-weight:700;min-height:1.4em}.fmsg.bad{color:#b3123c}
+.ed-wide{width:min(540px,calc(100vw - 28px))}
+.ib-card{border:2px solid var(--ink);border-radius:16px;padding:12px;display:grid;gap:6px;background:#fff}
+.ib-card.new{background:var(--yellow)}
+.ib-card pre{white-space:pre-wrap;font:inherit;margin:0;word-break:break-word}
+.ib-card .meta{font-size:.9rem;opacity:.8}
+.ed-sql{width:100%;font:.8rem/1.4 monospace;padding:10px;border:2px solid var(--ink);border-radius:12px;background:#f7f5f2;color:var(--ink)}
+.ed-steps{padding-left:20px;display:grid;gap:6px}
