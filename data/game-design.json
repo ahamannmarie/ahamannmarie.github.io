@@ -2,25 +2,45 @@
   "tag": "Cozy games, big ideas",
   "title": "Game",
   "accent": "design.",
-  "lead": "Characters, worlds, and assets for games that feel like a warm blanket.",
+  "lead": "Characters, worlds, and assets for games.",
   "items": [
     {
-      "image": "",
-      "more": [],
+      "image": "/images/1791468444348-untitled-artwork-18-.png",
+      "more": [
+        "/images/1791468460798-untitled-artwork-15-.png",
+        "/images/1791468464198-untitled-artwork-13-.png",
+        "/images/1791468466786-untitled-artwork-11-.png",
+        "/images/1791468469422-untitled-artwork-1-.png",
+        "/images/1791468472498-untitled-artwork-7-.png"
+      ],
       "title": "Storybook town",
-      "subtitle": "Game jam · buildings and animations"
+      "subtitle": "Game jam · buildings "
     },
     {
-      "image": "",
-      "more": [],
-      "title": "Candy kart racer",
+      "image": "/images/1791468559599-img-0614.jpg",
+      "more": [
+        "/images/1791468564625-screenshot-2026-10-05-at-12-02-08-am.png",
+        "/images/1791468566876-screenshot-2026-10-04-at-8-08-59-pm.png",
+        "/images/1791468569393-img-0613-1-.jpg",
+        "/images/1791468571554-screenshot-2026-10-05-at-12-02-24-am.png"
+      ],
+      "title": "Storybook town sketches",
+      "subtitle": "Game jam · buildings "
+    },
+    {
+      "image": "/images/1791468492410-untitled-artwork-6-.png",
+      "more": [
+        "/images/1791468498731-untitled-artwork-4-.jpg",
+        "/images/1791468503121-untitled-artwork-24-.jpg",
+        "/images/1791468516463-untitled-artwork-12-.png",
+        "/images/1791468525247-untitled-artwork-17-.png",
+        "/images/1791468530639-untitled-artwork-16-.png",
+        "/images/1791468533232-untitled-artwork-14-.png",
+        "/images/1791468538250-untitled-artwork-9-.png",
+        "/images/1791468540907-untitled-artwork-8-.png"
+      ],
+      "title": "Cozy Autum game characters",
       "subtitle": "Original game concept"
-    },
-    {
-      "image": "",
-      "more": [],
-      "title": "Walk and idle cycles",
-      "subtitle": "Character animation"
     }
   ]
 }
