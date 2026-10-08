@@ -116,3 +116,5 @@ nav a[aria-current]{color:var(--pink);text-decoration:underline;text-underline-o
 .lb button:hover{background:var(--pink)}
 .lb-x{top:14px;right:14px}.lb-p,.lb-n{top:50%;margin-top:-24px}.lb-p{left:12px}.lb-n{right:12px}
 @media(max-width:640px){.lb-p,.lb-n{top:auto;bottom:14px;margin:0}.lb-cap{padding:8px 70px 20px}}
+
+.admin-link{font-size:.85rem;opacity:.7}

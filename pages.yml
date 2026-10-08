@@ -1,0 +1,299 @@
+media:
+  input: images
+  output: /images
+content:
+- name: home
+  label: Home page
+  type: file
+  path: data/home.json
+  format: json
+  fields:
+  - name: hero
+    label: Top section
+    type: object
+    fields:
+    - name: tag
+      label: Small label
+      type: string
+    - name: title
+      label: Heading
+      type: string
+    - name: accent
+      label: Pink accent text
+      type: string
+    - name: text
+      label: Intro text
+      type: text
+  - name: make
+    label: '"What I make" heading'
+    type: object
+    fields:
+    - name: tag
+      label: Small label
+      type: string
+    - name: heading
+      label: Heading
+      type: string
+  - name: card1
+    label: Card 1
+    type: object
+    fields:
+    - name: image
+      label: Image
+      type: image
+    - name: big
+      label: Big text on card
+      type: string
+    - name: label
+      label: Bottom label
+      type: string
+  - name: card2
+    label: Card 2
+    type: object
+    fields:
+    - name: image
+      label: Image
+      type: image
+    - name: big
+      label: Big text on card
+      type: string
+    - name: label
+      label: Bottom label
+      type: string
+  - name: card3
+    label: Card 3
+    type: object
+    fields:
+    - name: image
+      label: Image
+      type: image
+    - name: big
+      label: Big text on card
+      type: string
+    - name: label
+      label: Bottom label
+      type: string
+  - name: band
+    label: Scrolling pink banner text
+    type: text
+  - name: teaser
+    label: About teaser (dark section)
+    type: object
+    fields:
+    - name: image
+      label: Image
+      type: image
+    - name: tag
+      label: Small label
+      type: string
+    - name: heading
+      label: Heading
+      type: string
+    - name: link
+      label: Link text
+      type: string
+  - name: cta
+    label: Bottom call to action
+    type: object
+    fields:
+    - name: tag
+      label: Small label
+      type: string
+    - name: heading
+      label: Heading
+      type: string
+    - name: button
+      label: Button text
+      type: string
+- name: illustration
+  label: Illustration page
+  type: file
+  path: data/illustration.json
+  format: json
+  fields:
+  - name: tag
+    label: Small label above title
+    type: string
+  - name: title
+    label: Title
+    type: string
+  - name: accent
+    label: Pink accent text
+    type: string
+  - name: lead
+    label: Intro text
+    type: text
+  - name: items
+    label: Pieces
+    type: object
+    list: true
+    fields:
+    - name: image
+      label: Main image
+      type: image
+    - name: more
+      label: More images (swipe through in full screen)
+      type: image
+      list: true
+    - name: title
+      label: Title
+      type: string
+    - name: subtitle
+      label: Short description
+      type: string
+- name: game-design
+  label: Game design page
+  type: file
+  path: data/game-design.json
+  format: json
+  fields:
+  - name: tag
+    label: Small label above title
+    type: string
+  - name: title
+    label: Title
+    type: string
+  - name: accent
+    label: Pink accent text
+    type: string
+  - name: lead
+    label: Intro text
+    type: text
+  - name: items
+    label: Pieces
+    type: object
+    list: true
+    fields:
+    - name: image
+      label: Main image
+      type: image
+    - name: more
+      label: More images (swipe through in full screen)
+      type: image
+      list: true
+    - name: title
+      label: Title
+      type: string
+    - name: subtitle
+      label: Short description
+      type: string
+- name: commissions
+  label: Commissions page
+  type: file
+  path: data/commissions.json
+  format: json
+  fields:
+  - name: tag
+    label: Small label
+    type: string
+  - name: title
+    label: Title
+    type: string
+  - name: accent
+    label: Pink accent text
+    type: string
+  - name: lead
+    label: Intro text
+    type: text
+  - name: draw
+    label: What I draw box
+    type: object
+    fields:
+    - name: heading
+      label: Heading
+      type: string
+    - name: text
+      label: Text
+      type: text
+    - name: prices
+      label: Prices and turnaround
+      type: text
+  - name: how
+    label: How it works box
+    type: object
+    fields:
+    - name: heading
+      label: Heading
+      type: string
+    - name: steps
+      label: Steps
+      type: string
+      list: true
+  - name: cta
+    label: Bottom section
+    type: object
+    fields:
+    - name: heading
+      label: Heading
+      type: string
+    - name: button
+      label: Button text
+      type: string
+- name: about
+  label: About page
+  type: file
+  path: data/about.json
+  format: json
+  fields:
+  - name: tag
+    label: Small label
+    type: string
+  - name: title
+    label: Title
+    type: string
+  - name: accent
+    label: Pink accent text
+    type: string
+  - name: lead
+    label: Intro text
+    type: text
+  - name: portrait
+    label: Portrait image
+    type: image
+  - name: caption
+    label: Portrait caption
+    type: string
+  - name: bio
+    label: Bio paragraphs
+    type: text
+    list: true
+  - name: now
+    label: '"Currently" line'
+    type: string
+- name: site
+  label: Site-wide (email, footer)
+  type: file
+  path: data/site.json
+  format: json
+  fields:
+  - name: logo
+    label: Logo text
+    type: string
+  - name: nav
+    label: Menu words
+    type: object
+    fields:
+    - name: home
+      label: Home
+      type: string
+    - name: illustration
+      label: Illustration
+      type: string
+    - name: game
+      label: Game
+      type: string
+    - name: commissions
+      label: Commissions
+      type: string
+    - name: about
+      label: About
+      type: string
+  - name: email
+    label: Contact email
+    type: string
+  - name: footer
+    label: Footer line
+    type: string
+  - name: copyright
+    label: Copyright text
+    type: string

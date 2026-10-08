@@ -1,0 +1,39 @@
+{
+  "hero": {
+    "tag": "Artist & playful world-builder",
+    "title": "Come wander through my",
+    "accent": "imagination.",
+    "text": "Illustrator and concept artist creating expressive characters and immersive worlds."
+  },
+  "make": {
+    "tag": "Pick your adventure",
+    "heading": "What I make"
+  },
+  "card1": {
+    "image": "",
+    "big": "Sweet trouble",
+    "label": "Illustration & characters"
+  },
+  "card2": {
+    "image": "",
+    "big": "Small but mighty",
+    "label": "Game design"
+  },
+  "card3": {
+    "image": "",
+    "big": "Grow wild",
+    "label": "Custom commissions"
+  },
+  "band": "Games ✦ Big ideas ✦ Character design ✦ Colorful worlds ✦ Cozy games ✦ Big ideas ✦ ",
+  "teaser": {
+    "image": "",
+    "tag": "Nice to meet you",
+    "heading": "I draw joy with a dash of mischief.",
+    "link": "More about me ↗"
+  },
+  "cta": {
+    "tag": "Have a story to tell?",
+    "heading": "Let’s make something wonderfully weird.",
+    "button": "Commission me ↗"
+  }
+}

@@ -1,3 +1,14 @@
+// ---- colors and fonts from data/theme.json (set on the admin page)
+const FONTS={display:{'Bricolage Grotesque':'wght@500;800','Poppins':'wght@500;800','Nunito':'wght@500;800','Space Grotesk':'wght@500;700','Baloo 2':'wght@500;800','Fredoka':'wght@500;700','Lilita One':'wght@400','Syne':'wght@500;800','DM Serif Display':'wght@400'},
+ body:{'DM Sans':'wght@400;500;700','Nunito':'wght@400;700','Poppins':'wght@400;500;700','Inter':'wght@400;500;700','Lora':'wght@400;500;700'},
+ serif:{'Instrument Serif':'ital@1','Playfair Display':'ital,wght@1,400','DM Serif Display':'ital@1','Fraunces':'ital,wght@1,400','Lora':'ital,wght@1,400','Caveat':'wght@400'}};
+function applyTheme(t){if(!t)return;const r=document.documentElement.style,fam=[];
+ Object.entries(t.colors||{}).forEach(([k,v])=>v&&r.setProperty('--'+k,v));
+ [['display','--display'],['body','--body'],['serif','--serif']].forEach(([k,v])=>{const n=(t.fonts||{})[k];if(n&&FONTS[k][n]){r.setProperty(v,'"'+n+'",'+(k==='serif'?'Georgia,serif':'Arial,sans-serif'));if(!['Bricolage Grotesque','DM Sans','Instrument Serif'].includes(n))fam.push('family='+n.replace(/ /g,'+')+':'+FONTS[k][n])}});
+ if(fam.length){const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?'+fam.join('&')+'&display=swap';document.head.append(l)}}
+try{applyTheme(JSON.parse(localStorage.theme||'null'))}catch(e){}
+fetch('data/theme.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(t=>{if(t&&JSON.stringify(t)!==localStorage.theme){localStorage.theme=JSON.stringify(t);applyTheme(t)}}).catch(()=>{});
+
 // star marker on the scroll trail
 const dot=document.getElementById('dot'),trail=document.getElementById('trail');
 function move(){const m=document.documentElement.scrollHeight-innerHeight;dot.style.top=((m>0?scrollY/m:0)*(trail.clientHeight-22))+'px'}
@@ -32,6 +43,9 @@ const lb=(()=>{let el,track,cap,slides=[],cur=0,opener;
  const page=document.body.dataset.page;
  const [site,data,home]=await Promise.all([load('site'),load(page),page==='home'?{}:load('home')]);
  const d={...data,site}; if(!d.cta&&home.cta) d.cta=home.cta;
+ if(site.logo){const a=document.querySelector('.logo'),[x,y]=site.logo.split('✦');if(a){a.textContent=x;if(y!==undefined){const s=document.createElement('span');s.textContent='✦';a.append(s,y)}}}
+ const nv=site.nav||{},links=document.querySelectorAll('header nav a');['home','illustration','game','commissions','about'].forEach((k,i)=>{if(links[i]&&nv[k])links[i].textContent=nv[k]});
+ document.querySelectorAll('footer').forEach(f=>{const a=document.createElement('a');a.href='admin.html';a.className='admin-link';a.textContent='✎ Edit site';f.append(a)});
  document.querySelectorAll('[data-text]').forEach(e=>{const v=get(d,e.dataset.text);if(typeof v==='string'&&v)e.textContent=v});
  document.querySelectorAll('[data-list]').forEach(e=>{const v=get(d,e.dataset.list);if(Array.isArray(v)&&v.length){e.replaceChildren(...v.map(t=>{const i=document.createElement(e.dataset.item||'li');i.textContent=t;return i}))}});
  document.querySelectorAll('[data-mailto]').forEach(e=>{const v=get(d,e.dataset.mailto);if(v)e.href='mailto:'+v+'?subject=Commission%20inquiry'});

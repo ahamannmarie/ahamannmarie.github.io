@@ -1,0 +1,23 @@
+{
+  "tag": "Available for commissions",
+  "title": "Commissions",
+  "accent": "open.",
+  "lead": "Original characters, pets, mascots, and game assets. Tell me what you have in mind.",
+  "draw": {
+    "heading": "What I draw",
+    "text": "Character designs, character sheets, pet portraits, mascots, small game assets, and illustrated scenes.",
+    "prices": "Prices and turnaround: add yours here."
+  },
+  "how": {
+    "heading": "How it works",
+    "steps": [
+      "Email me your idea and any references.",
+      "I send rough sketches for you to react to.",
+      "We polish your favorite, then I deliver final files."
+    ]
+  },
+  "cta": {
+    "heading": "Got an idea? Send it over.",
+    "button": "Email me ↗"
+  }
+}

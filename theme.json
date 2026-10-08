@@ -1,0 +1,18 @@
+{
+  "colors": {
+    "paper": "#f2f0ed",
+    "ink": "#4a3d58",
+    "pink": "#e5607f",
+    "yellow": "#f3d24c",
+    "orange": "#f28c52",
+    "blush": "#f4cfe2",
+    "plum": "#38213f",
+    "peach": "#f6d9c6",
+    "salmon": "#f9b79b"
+  },
+  "fonts": {
+    "display": "Bricolage Grotesque",
+    "body": "DM Sans",
+    "serif": "Instrument Serif"
+  }
+}

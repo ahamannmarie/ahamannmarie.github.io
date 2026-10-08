@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><title>Edit site | Annmarie Aham</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--paper)}
+#login{max-width:580px;margin:6vh auto;padding:clamp(20px,4vw,36px);border:2px solid var(--ink);border-radius:28px;box-shadow:6px 8px 0 var(--ink);background:#fff;display:grid;gap:14px}
+#login ol{padding-left:20px;display:grid;gap:6px}
+#app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--plum);color:#fff;padding:20px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow:auto}
+aside h1{font-size:1.6rem;margin-bottom:10px}
+aside a{color:#fff;margin-top:auto;font-size:.95rem}
+.tab{text-align:left;background:none;border:2px solid transparent;color:#fff;padding:11px 14px;border-radius:14px;font:inherit;font-weight:700;cursor:pointer;min-height:44px}
+.tab:hover{background:rgba(255,255,255,.12)}.tab[aria-current]{background:var(--pink)}
+main{padding:0 clamp(16px,4vw,48px) 90px;max-width:860px}
+.bar{position:sticky;top:0;z-index:5;background:var(--paper);display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:16px 0;border-bottom:2px solid var(--ink);margin-bottom:24px}
+.bar h2{font-size:1.8rem;margin-right:auto}
+#msg{font-weight:700}#msg.err{color:#b3123c}
+.b{background:var(--plum);color:#fff;border:0;border-radius:999px;padding:12px 22px;font:inherit;font-weight:700;cursor:pointer;min-height:44px}
+.b:hover{background:var(--pink)}.b.s{background:#fff;color:var(--ink);border:2px solid var(--ink);padding:6px 14px;min-height:36px}
+.f{margin-bottom:18px}.l{display:block;font-weight:700;margin-bottom:6px}
+input[type=text],input[type=email],textarea,select{width:100%;padding:11px 12px;border:2px solid var(--ink);border-radius:12px;font:inherit;background:#fff;color:var(--ink)}
+input[type=color]{width:64px;height:44px;border:2px solid var(--ink);border-radius:12px;padding:2px;background:#fff}
+fieldset{border:2px solid var(--ink);border-radius:20px;padding:16px;margin:0 0 18px;min-width:0}
+legend{font-weight:800;padding:0 8px}legend:empty{display:none}
+.row{border:2px dashed #b9aec2;border-radius:16px;padding:12px;margin-bottom:12px}
+.rh{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-weight:700}.rh .b:first-of-type{margin-left:auto}
+.thumb{display:block;width:150px;aspect-ratio:4/3;object-fit:cover;border-radius:12px;border:2px solid var(--ink);margin-bottom:8px;background:#eee}
+.hint{display:block;font-size:.85rem;opacity:.75;margin-bottom:8px;word-break:break-all}
+@media(max-width:760px){#app{display:block}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap}aside h1{width:100%}aside a{margin:0}}
+</style></head>
+<body>
+<div id="login" hidden>
+  <h1 style="font-size:2.2rem">Edit your site</h1>
+  <p>Only someone with your private key (a GitHub token) can edit. Make it once:</p>
+  <ol>
+    <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → new fine-grained token</a>.</li>
+    <li>Name it "site editor". Set the expiration as long as you like.</li>
+    <li>Under <b>Repository access</b>, choose <b>Only select repositories</b> and pick your site repo.</li>
+    <li>Under <b>Permissions → Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
+    <li>Click <b>Generate token</b>, copy it, and paste it below.</li>
+  </ol>
+  <div class="f"><label class="l" for="tk">Token</label><input id="tk" type="password" autocomplete="off" style="width:100%;padding:11px 12px;border:2px solid var(--ink);border-radius:12px;font:inherit"></div>
+  <div class="f"><label class="l" for="rp">Repository</label><input id="rp" type="text"></div>
+  <label><input id="rem" type="checkbox" checked> Remember me on this device (only use on your own computer)</label>
+  <button class="b" id="go">Sign in</button><p id="lmsg" role="alert" class="err" style="color:#b3123c;font-weight:700"></p>
+</div>
+<div id="app" hidden>
+  <aside><h1>Edit site</h1><nav id="tabs" aria-label="Pages" style="display:contents"></nav><a href="index.html" target="_blank" rel="noopener">View site ↗</a><button class="tab" id="out">Sign out</button></aside>
+  <main><div class="bar"><h2 id="ttl"></h2><span id="msg" role="status"></span><button class="b" id="save">Save changes</button></div><div id="form"></div></main>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const el=(t,a={},...k)=>{const e=document.createElement(t);for(const[x,y]of Object.entries(a)){x==='class'?e.className=y:x.startsWith('on')?e[x]=y:e.setAttribute(x,y)}e.append(...k);return e};
+let token=sessionStorage.gh||localStorage.gh||'',repo=localStorage.repo||'ahamannmarie/ahamannmarie.github.io',cur,data,sha,dirty=false;const prev={};
+
+// ---- field helpers
+const S=(k,l)=>({k,l,t:'s'}),T=(k,l)=>({k,l,t:'t'}),I=(k,l)=>({k,l,t:'i'}),C=(k,l)=>({k,l,t:'c'}),F=(k,l,opts)=>({k,l,t:'f',opts}),O=(k,l,f)=>({k,l,t:'o',f}),L=d=>({...d,list:true});
+const card=n=>O('card'+n,'Card '+n,[I('image','Image'),S('big','Big text on card'),S('label','Bottom label')]);
+const gal=[S('tag','Small label above title'),S('title','Title'),S('accent','Pink accent text'),T('lead','Intro text'),L(O('items','Pieces (this order is the order on the page)',[I('image','Main image'),L(I('more','More images (people swipe to these in full screen)')),S('title','Title'),S('subtitle','Short description')]))];
+const DISPLAY=['Bricolage Grotesque','Poppins','Nunito','Space Grotesk','Baloo 2','Fredoka','Lilita One','Syne','DM Serif Display'],BODY=['DM Sans','Nunito','Poppins','Inter','Lora'],ACCENT=['Instrument Serif','Playfair Display','DM Serif Display','Fraunces','Lora','Caveat'];
+const PAGES=[
+{id:'home',label:'Home',file:'data/home.json',schema:[O('hero','Top section',[S('tag','Small label'),S('title','Heading'),S('accent','Pink accent text'),T('text','Intro text')]),O('make','"What I make" heading',[S('tag','Small label'),S('heading','Heading')]),card(1),card(2),card(3),T('band','Scrolling pink banner text'),O('teaser','Dark about section',[I('image','Image'),S('tag','Small label'),S('heading','Heading'),S('link','Link text')]),O('cta','Bottom section',[S('tag','Small label'),S('heading','Heading'),S('button','Button text')])]},
+{id:'illustration',label:'Illustration',file:'data/illustration.json',schema:gal},
+{id:'game',label:'Game design',file:'data/game-design.json',schema:gal},
+{id:'commissions',label:'Commissions',file:'data/commissions.json',schema:[S('tag','Small label'),S('title','Title'),S('accent','Pink accent text'),T('lead','Intro text'),O('draw','"What I draw" box',[S('heading','Heading'),T('text','Text'),T('prices','Prices and turnaround')]),O('how','"How it works" box',[S('heading','Heading'),L(S('steps','Steps'))]),O('cta','Bottom section',[S('heading','Heading'),S('button','Button text')])]},
+{id:'about',label:'About',file:'data/about.json',schema:[S('tag','Small label'),S('title','Title'),S('accent','Pink accent text'),T('lead','Intro text'),I('portrait','Portrait image'),S('caption','Portrait caption'),L(T('bio','Bio paragraphs')),S('now','"Currently" line')]},
+{id:'site',label:'Name, menu & footer',file:'data/site.json',schema:[S('logo','Logo text (keep the ✦ star)'),O('nav','Menu words',[S('home','Home'),S('illustration','Illustration'),S('game','Game design'),S('commissions','Commissions'),S('about','About me')]),S('email','Contact email'),S('footer','Footer line'),S('copyright','Copyright text')]},
+{id:'theme',label:'Colors & fonts',file:'data/theme.json',def:{colors:{paper:'#f2f0ed',ink:'#4a3d58',pink:'#e5607f',yellow:'#f3d24c',orange:'#f28c52',blush:'#f4cfe2',plum:'#38213f',peach:'#f6d9c6',salmon:'#f9b79b'},fonts:{display:'Bricolage Grotesque',body:'DM Sans',serif:'Instrument Serif'}},
+ schema:[O('colors','Colors',[C('paper','Page background'),C('ink','Text and outlines'),C('pink','Pink accent'),C('yellow','Yellow'),C('orange','Orange'),C('blush','Light pink'),C('plum','Dark purple'),C('peach','Peach circle'),C('salmon','Bottom section')]),O('fonts','Fonts',[F('display','Headings',DISPLAY),F('body','Body text',BODY),F('serif','Pink accent words',ACCENT)])]}];
+
+// ---- form builder
+const mark=()=>{dirty=true;msg('')};
+function msg(t,bad){const m=$('#msg');m.textContent=t;m.className=bad?'err':''}
+const btn=(t,f,aria)=>el('button',{class:'b s',type:'button',onclick:f,'aria-label':aria||t},t);
+function one(d,o,k){
+  if(d.t==='o'){const v=o[k]=o[k]&&typeof o[k]==='object'?o[k]:{};return el('fieldset',{},el('legend',{},d.l||''),...d.f.map(c=>field(c,v,c.k)))}
+  if(d.t==='i')return img(d,o,k);
+  if(d.t==='f'){const x=el('select');d.opts.forEach(n=>x.append(el('option',{value:n},n)));x.value=o[k]||d.opts[0];x.onchange=()=>{o[k]=x.value;mark()};return x}
+  const x=d.t==='t'?el('textarea',{rows:4}):el('input',{type:d.t==='c'?'color':'text'});x.value=o[k]||(d.t==='c'?'#000000':'');x.oninput=()=>{o[k]=x.value;mark()};return x}
+function field(d,o,k){
+  if(d.list){const arr=o[k]=Array.isArray(o[k])?o[k]:[];const fs=el('fieldset',{},el('legend',{},d.l)),box=el('div');
+    const mv=(i,n)=>{if(n<0||n>=arr.length)return;[arr[i],arr[n]]=[arr[n],arr[i]];mark();draw()};
+    const draw=()=>{box.replaceChildren(...arr.map((_,i)=>el('div',{class:'row'},el('div',{class:'rh'},'#'+(i+1),btn('↑',()=>mv(i,i-1),'Move up'),btn('↓',()=>mv(i,i+1),'Move down'),btn('Remove',()=>{arr.splice(i,1);mark();draw()},'Remove item')),d.t==='o'||d.t==='i'?one({...d,l:'',list:false},arr,i):el('label',{},el('span',{class:'l'},d.l),one({...d,list:false},arr,i)))))};
+    draw();fs.append(box,btn('+ Add',()=>{arr.push(d.t==='o'?{}:'');mark();draw()},'Add to '+d.l));return fs}
+  if(d.t==='o')return one(d,o,k);
+  const w=el('div',{class:'f'});
+  if(d.t==='i')w.append(el('span',{class:'l'},d.l),one(d,o,k));else w.append(el('label',{},el('span',{class:'l'},d.l),one(d,o,k)));
+  return w}
+function img(d,o,k){const w=el('div'),pic=el('img',{class:'thumb',alt:''}),info=el('span',{class:'hint'});
+  const show=()=>{const v=o[k];pic.hidden=!v;if(v){pic.src=prev[v]||v.replace(/^\//,'')}info.textContent=v||'No image yet'};
+  const inp=el('input',{type:'file',accept:'image/*','aria-label':'Upload '+(d.l||'image')});
+  inp.onchange=async()=>{const f=inp.files[0];if(!f)return;msg('Uploading…');try{o[k]=await upload(f);mark();show();msg('Uploaded. Click Save changes to use it.')}catch(e){msg('Upload failed: '+e.message,1)}};
+  w.append(pic,info,inp,' ',btn('Remove image',()=>{o[k]='';mark();show()}));show();return w}
+
+// ---- GitHub
+const api=(p,o={})=>fetch('https://api.github.com/repos/'+repo+'/contents/'+p,{cache:'no-store',...o,headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json'}});
+const dec=c=>new TextDecoder().decode(Uint8Array.from(atob(c.replace(/\n/g,'')),x=>x.charCodeAt(0)));
+const enc=s=>btoa(unescape(encodeURIComponent(s)));
+function shrink(f){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>{const s=Math.min(1,1800/Math.max(i.width,i.height)),c=el('canvas'),png=f.type==='image/png';c.width=Math.round(i.width*s);c.height=Math.round(i.height*s);const x=c.getContext('2d');if(!png){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}x.drawImage(i,0,0,c.width,c.height);c.toBlob(b=>b?res(b):rej(new Error('could not read image')),png?'image/png':'image/jpeg',.88)};i.onerror=()=>rej(new Error('could not read that image (export HEIC photos as JPG or PNG first)'));i.src=URL.createObjectURL(f)})}
+async function upload(f){const b=await shrink(f),name=Date.now()+'-'+f.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)+(b.type==='image/png'?'.png':'.jpg');
+  const content=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(',')[1]);fr.readAsDataURL(b)});
+  const r=await api('images/'+name,{method:'PUT',body:JSON.stringify({message:'Upload '+name,content})});if(!r.ok)throw new Error((await r.json()).message);
+  const p='/images/'+name;prev[p]=URL.createObjectURL(b);return p}
+async function openPage(p){
+  if(dirty&&!confirm('You have unsaved changes. Leave without saving?'))return;
+  cur=p;dirty=false;msg('');$('#ttl').textContent=p.label;document.querySelectorAll('.tab[data-id]').forEach(b=>b.toggleAttribute('aria-current',b.dataset.id===p.id));
+  $('#form').replaceChildren(el('p',{},'Loading…'));
+  const r=await api(p.file+'?_='+Date.now());
+  if(r.status===404){data=structuredClone(p.def||{});sha=null}
+  else if(!r.ok){$('#form').replaceChildren(el('p',{class:'err'},'Could not load: '+(await r.json()).message));return}
+  else{const j=await r.json();sha=j.sha;data=JSON.parse(dec(j.content))}
+  if(p.def)for(const g in p.def)data[g]={...p.def[g],...(data[g]||{})};
+  $('#form').replaceChildren(...p.schema.map(d=>field(d,data,d.k)));window.scrollTo(0,0)}
+$('#save').onclick=async()=>{msg('Saving…');const body={message:'Edit '+cur.label+' (admin page)',content:enc(JSON.stringify(data,null,2)+'\n')};if(sha)body.sha=sha;
+  const r=await api(cur.file,{method:'PUT',body:JSON.stringify(body)}),j=await r.json();
+  if(!r.ok){msg(r.status===409||r.status===422?'This page changed somewhere else. Reload this page, then try again.':j.message,1);return}
+  sha=j.content.sha;dirty=false;if(cur.id==='theme')localStorage.removeItem('theme');msg('Saved. Your live site updates in about a minute.')};
+addEventListener('beforeunload',e=>{if(dirty)e.preventDefault()});
+
+// ---- sign in
+function start(){$('#login').hidden=true;$('#app').hidden=false;const t=$('#tabs');PAGES.forEach(p=>t.append(el('button',{class:'tab','data-id':p.id,type:'button',onclick:()=>openPage(p)},p.label)));openPage(PAGES[0])}
+$('#out').onclick=()=>{if(dirty&&!confirm('Unsaved changes will be lost. Sign out?'))return;sessionStorage.removeItem('gh');localStorage.removeItem('gh');location.reload()};
+$('#go').onclick=async()=>{const lm=$('#lmsg');lm.textContent='';token=$('#tk').value.trim();repo=$('#rp').value.trim();
+  const r=await fetch('https://api.github.com/repos/'+repo,{headers:{Authorization:'Bearer '+token}}).catch(()=>null);
+  if(!r)return lm.textContent='Could not reach GitHub. Check your connection.';
+  if(r.status===401)return lm.textContent='That token did not work. Copy it again from GitHub.';
+  if(r.status===404)return lm.textContent='The token cannot see that repository. Check the repository name and the token’s repository access.';
+  const j=await r.json();if(!j.permissions||!j.permissions.push)return lm.textContent='The token is read-only. Set Contents to Read and write.';
+  sessionStorage.gh=token;if($('#rem').checked){localStorage.gh=token;localStorage.repo=repo}start()};
+$('#rp').value=repo;
+if(token){fetch('https://api.github.com/repos/'+repo,{headers:{Authorization:'Bearer '+token}}).then(r=>r.ok?start():(localStorage.removeItem('gh'),sessionStorage.removeItem('gh'),$('#login').hidden=false)).catch(()=>$('#login').hidden=false)}else $('#login').hidden=false;
+</script></body></html>
