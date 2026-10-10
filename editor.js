@@ -83,12 +83,18 @@ function drawGallery(){const box=$('[data-gallery]');if(!box)return;const D=docs
       btn('📷 '+(it.image?'Change':'Add')+' image',()=>pickImage(p=>{it.image=p;touch(D);drawGallery()}),'b s ed-img'));
     const cap=el('div',{class:'cap'}),t=el('span',{},it.title||''),s=el('small',{},it.subtitle||'');
     editable(t,v=>{it.title=v;touch(D)});editable(s,v=>{it.subtitle=v;touch(D)});cap.append(t,s);
-    const more=it.more=Array.isArray(it.more)?it.more:[];
-    const ui=el('div',{class:'ed-ui'},btn('←',()=>move(i,i-1),'b s','Move earlier'),btn('→',()=>move(i,i+1),'b s','Move later'),
-      btn('+ Extra image ('+more.length+')',()=>pickImage(p=>{more.push(p);touch(D);drawGallery()}),'b s','Add an extra image to this piece'),
-      ...(more.length?[btn('− Extra',()=>{more.pop();touch(D);drawGallery()},'b s','Remove last extra image')]:[]),
-      btn('Delete',()=>{if(confirm('Delete this piece?')){items.splice(i,1);touch(D);drawGallery()}}));
-    tile.append(wrap,cap,ui);box.append(tile)});
+    const more=it.more=Array.isArray(it.more)?it.more:[],list=[it.image,...more].filter(Boolean);
+    const commit=l=>{it.image=l[0]||'';it.more=l.slice(1);touch(D);drawGallery()};
+    const swap=(k,n)=>{if(n<0||n>=list.length)return;const l=[...list];[l[k],l[n]]=[l[n],l[k]];commit(l)};
+    const strip=el('div',{class:'ed-strip',role:'group','aria-label':'Images in '+(it.title||'this piece')});
+    list.forEach((u,k)=>strip.append(el('div',{class:'ed-thumb'},el('img',{src:imgSrc(u),alt:''}),el('span',{class:'ed-tag'},k?'Extra '+k:'Main (tile picture)'),
+      el('div',{class:'ed-mini'},btn('◀',()=>swap(k,k-1),'b s','Move image '+(k+1)+' earlier'),btn('▶',()=>swap(k,k+1),'b s','Move image '+(k+1)+' later'),
+        btn('Replace',()=>pickImage(p=>{const l=[...list];l[k]=p;commit(l)}),'b s','Replace image '+(k+1)),
+        btn('✕',()=>{const l=[...list];l.splice(k,1);commit(l)},'b s','Remove image '+(k+1))))));
+    strip.append(btn('+ Add image',()=>pickImage(p=>commit([...list,p])),'b s','Add another image to this piece'));
+    const ui=el('div',{class:'ed-ui'},btn('←',()=>move(i,i-1),'b s','Move piece earlier'),btn('→',()=>move(i,i+1),'b s','Move piece later'),
+      btn('Delete piece',()=>{if(confirm('Delete this whole piece?')){items.splice(i,1);touch(D);drawGallery()}}));
+    tile.append(wrap,cap,el('span',{class:'ed-hint'},'Images in this piece (people swipe through them in full screen). Nothing is final until you click Save changes.'),strip,ui);box.append(tile)});
   box.append(el('div',{class:'tile ed-add'},btn('+ Add a piece',()=>{items.push({image:'',more:[],title:'New piece',subtitle:'Short description'});touch(D);drawGallery()},'b')))}
 
 // ---------- panels (colors, fonts, menu)

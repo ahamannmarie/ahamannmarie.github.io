@@ -172,3 +172,17 @@ html::-webkit-scrollbar{display:none}
 .soc-slot{max-width:420px;margin:18px 0 0 auto}
 .socials a.empty{opacity:.4}
 @media(max-width:640px){.soc-slot{margin-left:0}}
+
+.ed-hint{display:block;font-size:.85rem;opacity:.8;padding:8px 14px 0}
+.ed-strip{display:flex;gap:10px;flex-wrap:wrap;padding:10px 14px;align-items:flex-start}
+.ed-thumb{display:grid;gap:4px;width:112px}
+.ed-thumb img{width:112px;height:84px;object-fit:cover;border-radius:10px;border:2px solid var(--ink)}
+.ed-tag{font-size:.78rem;font-weight:700;line-height:1.2}
+.ed-mini{display:flex;flex-wrap:wrap;gap:4px}
+.ed-mini .b.s{padding:2px 8px;min-height:32px;font-size:.8rem}
+
+/* bigger gallery: fewer, larger tiles that show each whole piece (no cropping) */
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));align-items:start;gap:32px}
+.tile .open>img,.tile>div>img{width:100%;height:auto;aspect-ratio:auto;max-height:85vh;object-fit:contain;background:#fff;display:block}
+.tile .cap{font-size:1.45rem;padding:20px 26px}
+.tile .cap small{font-size:1rem}
