@@ -19,5 +19,31 @@
   "cta": {
     "heading": "Got an idea? Send it over.",
     "button": "Email me ↗"
-  }
+  },
+  "items": [
+    {
+      "image": "/images/1791734162444-untitled-artwork-4.jpg",
+      "more": [
+        "/images/1791734309794-untitled-artwork-3.jpg",
+        "/images/1791734319394-untitled-artwork.jpg",
+        "/images/1791734325733-untitled-artwork-2.jpg"
+      ],
+      "title": "Rubs Denim spring fashion concepts",
+      "subtitle": "Design a streetwear line that could be work in the spring/summer"
+    },
+    {
+      "image": "/images/1791734260126-untitled-artwork-33-.png",
+      "more": [
+        "/images/1791734300995-untitled-artwork-22-.jpg"
+      ],
+      "title": "Rubs Denim fall fashion concepts",
+      "subtitle": "Design a streetwear line that could be worn in the fall"
+    },
+    {
+      "image": "/images/1791734485017-basketball-logo.jpg",
+      "more": [],
+      "title": "Basketball team jersey logo",
+      "subtitle": "Make a logo that represents the team's spirit"
+    }
+  ]
 }
