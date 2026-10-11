@@ -35,7 +35,8 @@
     {
       "image": "/images/1791467915864-untitled-artwork-14-.jpg",
       "more": [
-        "/images/1791467924833-untitled-artwork-13-.jpg"
+        "/images/1791467924833-untitled-artwork-13-.jpg",
+        "/images/1791748316177-untitled-artwork-18-.jpg"
       ],
       "title": "Cozy corner",
       "subtitle": "Character illustration",
@@ -54,6 +55,13 @@
       "title": "Fashion City",
       "subtitle": "Doll concepts",
       "color": "#f3d24c"
+    },
+    {
+      "image": "/images/1791748113891-untitled-artwork-10-.jpg",
+      "more": [],
+      "title": "Spider Woman",
+      "subtitle": "Character sheet",
+      "color": "#f28c52"
     }
   ]
 }
