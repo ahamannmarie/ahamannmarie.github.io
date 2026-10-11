@@ -16,7 +16,8 @@
         "/images/1791674976647-untitled-artwork-25-.png"
       ],
       "title": "Cozy game town",
-      "subtitle": "Game jam · buildings "
+      "subtitle": "Game jam · buildings ",
+      "color": "#e5607f"
     },
     {
       "image": "/images/1791468571554-screenshot-2026-10-05-at-12-02-24-am.png",
@@ -27,7 +28,8 @@
         "/images/1791468566876-screenshot-2026-10-04-at-8-08-59-pm.png"
       ],
       "title": "Cozy game town sketches",
-      "subtitle": "Game jam · buildings "
+      "subtitle": "Game jam · buildings ",
+      "color": "#f28c52"
     },
     {
       "image": "/images/1791674801634-untitled-artwork-24-.png",
@@ -43,7 +45,8 @@
         "/images/1791674815863-untitled-artwork-23-.png"
       ],
       "title": "Cozy autum game characters",
-      "subtitle": "Original game concept"
+      "subtitle": "Original game concept",
+      "color": "#38213f"
     },
     {
       "image": "/images/1791674807920-untitled-artwork-13-.gif",
@@ -59,7 +62,8 @@
         "/images/1791674819533-untitled-artwork-14-.gif"
       ],
       "title": "Cozy autumn game walk cycles",
-      "subtitle": ""
+      "subtitle": "",
+      "color": "#f3d24c"
     }
   ]
 }
