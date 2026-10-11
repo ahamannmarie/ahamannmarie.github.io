@@ -1,9 +1,9 @@
 {
   "hero": {
-    "tag": "Artist & playful world-builder",
+    "tag": "Artist & playful creator",
     "title": "Come wander through my",
     "accent": "imagination.",
-    "text": "Illustrator and concept artist creating expressive characters and immersive worlds."
+    "text": "Illustrator and concept artist creating expressive characters."
   },
   "make": {
     "tag": "Pick your adventure",
@@ -28,7 +28,7 @@
   "teaser": {
     "image": "/images/1791469384380-1783641193646-dqh9ye.jpg",
     "tag": "Nice to meet you",
-    "heading": "I draw joy with a dash of mischief.",
+    "heading": "I draw characters, props and cute outfits",
     "link": "More about me ↗"
   },
   "cta": {
