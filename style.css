@@ -186,3 +186,5 @@ html::-webkit-scrollbar{display:none}
 .tile .open>img,.tile>div>img{width:100%;height:auto;aspect-ratio:auto;max-height:85vh;object-fit:contain;background:#fff;display:block}
 .tile .cap{font-size:1.45rem;padding:20px 26px}
 .tile .cap small{font-size:1rem}
+
+.grid:empty{display:none}
