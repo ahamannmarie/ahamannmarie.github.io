@@ -67,7 +67,7 @@ const lb=(()=>{let el,track,cap,slides=[],cur=0,opener;
     if(imgs.length>1){const m=document.createElement('span');m.className='more';m.textContent='+'+(imgs.length-1);b.append(m)}
     b.onclick=()=>lb.open(slides,first,b);tile.append(b)}
    else{const ph=document.createElement('div');ph.className='ph';ph.textContent='your art here';tile.append(ph)}
-   const c=document.createElement('div');c.className='cap';c.textContent=title;
+   const c=document.createElement('div');c.className='cap';c.textContent=title;capColor(c,it.color);
    if(it.subtitle){const s=document.createElement('small');s.textContent=it.subtitle;c.append(s)}
    tile.append(c);box.append(tile)});
  }
@@ -105,3 +105,8 @@ function renderSocials(s){document.querySelectorAll('.socials').forEach(n=>n.rem
       else{a.href='#';a.className='empty';a.setAttribute('aria-label',l+' (add your link in Menu & site)')}
       d.append(a)});
     slots.length?t.append(d):t.prepend(d)})}
+
+// caption bar color: pick a background, text turns light or dark automatically
+function capColor(el,hex){if(!/^#[0-9a-f]{6}$/i.test(hex||'')){el.style.background='';el.style.color='';return}
+  const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255,lum=(0.299*r+0.587*g+0.114*b)/255;
+  el.style.background=hex;el.style.color=lum>0.6?'#2b2233':'#ffffff'}

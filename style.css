@@ -188,3 +188,6 @@ html::-webkit-scrollbar{display:none}
 .tile .cap small{font-size:1rem}
 
 .grid:empty{display:none}
+
+.ed-sw{width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);cursor:pointer;padding:0}
+.tile .cap{transition:background .2s}

@@ -82,7 +82,7 @@ function drawGallery(){const box=$('[data-gallery]');if(!box)return;const D=docs
     wrap.append(it.image?el('img',{src:imgSrc(it.image),alt:''}):el('div',{class:'ph'},'your art here'),
       btn('📷 '+(it.image?'Change':'Add')+' image',()=>pickImage(p=>{it.image=p;touch(D);drawGallery()}),'b s ed-img'));
     const cap=el('div',{class:'cap'}),t=el('span',{},it.title||''),s=el('small',{},it.subtitle||'');
-    editable(t,v=>{it.title=v;touch(D)});editable(s,v=>{it.subtitle=v;touch(D)});cap.append(t,s);
+    capColor(cap,it.color);editable(t,v=>{it.title=v;touch(D)});editable(s,v=>{it.subtitle=v;touch(D)});cap.append(t,s);
     const more=it.more=Array.isArray(it.more)?it.more:[],list=[it.image,...more].filter(Boolean);
     const commit=l=>{it.image=l[0]||'';it.more=l.slice(1);touch(D);drawGallery()};
     const swap=(k,n)=>{if(n<0||n>=list.length)return;const l=[...list];[l[k],l[n]]=[l[n],l[k]];commit(l)};
@@ -94,7 +94,12 @@ function drawGallery(){const box=$('[data-gallery]');if(!box)return;const D=docs
     strip.append(btn('+ Add image',()=>pickImage(p=>commit([...list,p])),'b s','Add another image to this piece'));
     const ui=el('div',{class:'ed-ui'},btn('←',()=>move(i,i-1),'b s','Move piece earlier'),btn('→',()=>move(i,i+1),'b s','Move piece later'),
       btn('Delete piece',()=>{if(confirm('Delete this whole piece?')){items.splice(i,1);touch(D);drawGallery()}}));
-    tile.append(wrap,cap,el('span',{class:'ed-hint'},'Images in this piece (people swipe through them in full screen). Nothing is final until you click Save changes.'),strip,ui);box.append(tile)});
+    const cp=el('input',{type:'color','aria-label':'Caption color for '+(it.title||'this piece')});cp.value=it.color||'#ffffff';
+    cp.oninput=()=>{it.color=cp.value;capColor(cap,it.color);touch(D)};
+    const colorRow=el('div',{class:'ed-ui'},el('label',{class:'ed-l',style:'display:flex;gap:8px;align-items:center'},'Caption color',cp),
+      ...['#ffffff','#f4cfe2','#f3d24c','#f28c52','#e5607f','#38213f'].map(h=>el('button',{type:'button',class:'ed-sw',style:'background:'+h,'aria-label':'Use '+h,onclick:()=>{it.color=h;cp.value=h;capColor(cap,h);touch(D)}})),
+      btn('Reset',()=>{delete it.color;cp.value='#ffffff';capColor(cap,'');touch(D)},'b s','Reset caption color'));
+    tile.append(wrap,cap,colorRow,el('span',{class:'ed-hint'},'Images in this piece (people swipe through them in full screen). Nothing is final until you click Save changes.'),strip,ui);box.append(tile)});
   box.append(el('div',{class:'tile ed-add'},btn('+ Add a piece',()=>{items.push({image:'',more:[],title:'New piece',subtitle:'Short description'});touch(D);drawGallery()},'b')))}
 
 // ---------- panels (colors, fonts, menu)
