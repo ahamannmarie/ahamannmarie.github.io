@@ -1,12 +1,12 @@
 {
   "hero": {
     "tag": "Artist & playful creator",
-    "title": "Come wander through my",
-    "accent": "imagination.",
-    "text": "Illustrator and concept artist creating expressive characters."
+    "title": "Come walk through my",
+    "accent": "gallery.",
+    "text": "Illustrator and concept artist creating expressive characters through visual storytelling."
   },
   "make": {
-    "tag": "Pick your adventure",
+    "tag": "Pick your gallery",
     "heading": "What I make"
   },
   "card1": {
@@ -24,7 +24,7 @@
     "big": "commission art",
     "label": "Custom commissions"
   },
-  "band": "Games ✦ Big ideas ✦ Character design ✦ Colorful worlds ✦ Cozy games ✦ Big ideas ✦ ",
+  "band": "Illustration ✦ Big ideas ✦ Character design ✦ Storytelling✦ Cozy Games ✦ Big Ideas ✦ ",
   "teaser": {
     "image": "/images/1791469384380-1783641193646-dqh9ye.jpg",
     "tag": "Nice to meet you",
